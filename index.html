@@ -7,83 +7,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>ポーカー記録アプリ</h1>
+    <h1>同卓スタック記録アプリ</h1>
 
-    <label for="blind">ブラインド:</label>
-    <input type="number" id="blind" placeholder="ブラインド金額">
-    <button onclick="calculateBB()">BB計算</button>
+    <div class="input-group">
+        <input type="number" id="blind" placeholder="ブラインド金額">
+        <button onclick="calculateBB()">BB計算</button>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>プレイヤー</th>
-                <th>ニックネーム</th>
-                <th>スタックサイズ</th>
-                <th>BB</th>
-                <th>傾向 (ルース/タイト)</th>
-                <th>傾向 (アグレ/パッシブ)</th>
-                <th>3bet頻度</th>
-                <th>ブラフ頻度</th>
-                <th>リンプ</th>
-                <th>リンプ時のハンド</th>
-                <th>ベット額の特徴</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- 10maxに対応 -->
-            <script>
-                for (let i = 1; i <= 10; i++) {
-                    document.write(`
-                        <tr>
-                            <td>Player ${i}</td>
-                            <td><input type="text" id="nickname${i}" placeholder="ニックネーム"></td>
-                            <td><input type="number" id="stack${i}" placeholder="スタックサイズ"></td>
-                            <td id="bb${i}">-</td>
-                            <td>
-                                <select id="tendency${i}">
-                                    <option value="tight">タイト</option>
-                                    <option value="loose">ルース</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="aggro${i}">
-                                    <option value="aggressive">アグレ</option>
-                                    <option value="passive">パッシブ</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="3bet${i}">
-                                    <option value="low">少なめ</option>
-                                    <option value="normal">普通</option>
-                                    <option value="high">多め</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="bluff${i}">
-                                    <option value="low">少なめ</option>
-                                    <option value="normal">普通</option>
-                                    <option value="high">多め</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="limp${i}">
-                                    <option value="yes">する</option>
-                                    <option value="no">しない</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="limpHand${i}">
-                                    <option value="weak">弱い</option>
-                                    <option value="premium">プレミア</option>
-                                </select>
-                            </td>
-                            <td><input type="text" id="betFeature${i}" placeholder="ベット額の特徴"></td>
-                        </tr>
-                    `);
-                }
-            </script>
-        </tbody>
-    </table>
+    <!-- カード生成ボタンをスタック情報の表示欄の上に配置 -->
+    <button id="generate-button" onclick="generateCards()">カード生成</button>
+
+    <!-- スタック情報の一覧を表示するエリア -->
+    <div id="stack-info-display" class="stack-sizes-display"></div>
+
+    <!-- スタック順の一覧を表示するエリア -->
+    <div id="stack-order-display" class="stack-sizes-display"></div>
+
+    <div id="players-container"></div>
 
     <script src="script.js"></script>
 </body>
