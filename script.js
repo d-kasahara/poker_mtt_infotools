@@ -50,11 +50,12 @@ function addPlayerCard(playerIndex) {
         <input type="text" id="nickname${playerIndex}" placeholder="ニックネーム">
         <input type="number" id="stack${playerIndex}" placeholder="スタックサイズ">
         
+        <p>BB: <span id="bb${playerIndex}">-</span></p> <!-- BB表示をスタックサイズの下に移動 -->
+        
         <select id="playStyle${playerIndex}">${playStyleOptions}</select>
         <select id="threeBet${playerIndex}">${threeBetOptions}</select>
         <select id="limp${playerIndex}">${limpOptions}</select>
         
-        <p>BB: <span id="bb${playerIndex}">-</span></p>
         <button class="delete-button" onclick="removePlayerCard(${playerIndex})">削除</button>
     `;
     container.appendChild(card);
