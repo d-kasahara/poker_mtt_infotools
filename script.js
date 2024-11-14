@@ -44,6 +44,10 @@ function removePlayerCard(playerIndex) {
 
     // プレイヤーデータをクリア（削除ではなく、初期化）
     playersData[playerIndex - 1] = { playerIndex, nickname: "", stack: 0, bb: 0, seat: 0 };
+    
+    // playerCountを減少させる
+    playerCount--;
+
     saveData();
 }
 
