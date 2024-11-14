@@ -22,20 +22,45 @@ function addPlayerCard(playerIndex) {
     card.className = "player-card";
     card.id = `player${playerIndex}`;
     
-    const seatOptions = Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">シート${i + 1}</option>`).join("");
+    const seatOptions = `<option value="" selected style="color: gray;">シートNo.</option>` +
+        Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">シート${i + 1}</option>`).join("");
+    
+    const playStyleOptions = `
+        <option value="" selected style="color: gray;">プレイスタイル</option>
+        <option value="タイトアグレ">タイトアグレ</option>
+        <option value="ルースアグレ">ルースアグレ</option>
+        <option value="タイトパッシブ">タイトパッシブ</option>
+        <option value="ルースパッシブ">ルースパッシブ</option>
+    `;
+    const threeBetOptions = `
+        <option value="" selected style="color: gray;">3ベット頻度</option>
+        <option value="3ベット少ない">3ベット少ない</option>
+        <option value="3ベット普通">3ベット普通</option>
+        <option value="3ベット多い">3ベット多い</option>
+    `;
+    const limpOptions = `
+        <option value="" selected style="color: gray;">リンプ頻度</option>
+        <option value="リンプしない">リンプしない</option>
+        <option value="リンプたまに">リンプたまに</option>
+        <option value="リンプよくする">リンプよくする</option>
+    `;
 
     card.innerHTML = `
         <select id="seat${playerIndex}">${seatOptions}</select>
         <input type="text" id="nickname${playerIndex}" placeholder="ニックネーム">
         <input type="number" id="stack${playerIndex}" placeholder="スタックサイズ">
+        
+        <select id="playStyle${playerIndex}">${playStyleOptions}</select>
+        <select id="threeBet${playerIndex}">${threeBetOptions}</select>
+        <select id="limp${playerIndex}">${limpOptions}</select>
+        
         <p>BB: <span id="bb${playerIndex}">-</span></p>
-
         <button class="delete-button" onclick="removePlayerCard(${playerIndex})">削除</button>
     `;
     container.appendChild(card);
 
     // playersData配列に初期データを追加
-    playersData[playerIndex - 1] = { playerIndex, nickname: "", stack: 0, bb: 0, seat: 0 };
+    playersData[playerIndex - 1] = { playerIndex, nickname: "", stack: 0, bb: 0, seat: 0, playStyle: "", threeBet: "", limp: "" };
 }
 
 // プレイヤーカードを削除する関数
@@ -43,7 +68,7 @@ function removePlayerCard(playerIndex) {
     document.getElementById(`player${playerIndex}`).remove();
 
     // プレイヤーデータをクリア（削除ではなく、初期化）
-    playersData[playerIndex - 1] = { playerIndex, nickname: "", stack: 0, bb: 0, seat: 0 };
+    playersData[playerIndex - 1] = { playerIndex, nickname: "", stack: 0, bb: 0, seat: 0, playStyle: "", threeBet: "", limp: "" };
     
     // playerCountを減少させる
     playerCount--;
@@ -88,10 +113,10 @@ function calculateBB() {
         }
     });
 
-    // スタック順（多い順に並び替え）
+    // スタック順（多い順に並び替え、ニックネームの右側を「：」に変更）
     stacks.sort((a, b) => b.stack - a.stack);
     stacks.slice(0, 10).forEach(player => {
-        stackOrderText += `シート${player.seat} - ${player.nickname} - ${player.stack} (${player.bb.toFixed(2)} BB)<br>`;
+        stackOrderText += `シート${player.seat} - ${player.nickname}：${player.stack} (${player.bb.toFixed(2)} BB)<br>`;
     });
 
     stackInfoDisplay.innerHTML = stackInfoText;

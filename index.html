@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>同卓スタック記録アプリ</h1>
+    <h1>ポーカー記録アプリ</h1>
+
+    <!-- カード生成ボタンの文言を「カード生成（最大10max）」に変更 -->
+    <button id="generate-button" onclick="generateCards()">カード生成（最大10max）</button>
 
     <div class="input-group">
         <input type="number" id="blind" placeholder="ブラインド金額">
         <button onclick="calculateBB()">BB計算</button>
     </div>
-
-    <!-- カード生成ボタンをスタック情報の表示欄の上に配置 -->
-    <button id="generate-button" onclick="generateCards()">カード生成</button>
 
     <!-- スタック情報の一覧を表示するエリア -->
     <div id="stack-info-display" class="stack-sizes-display"></div>
