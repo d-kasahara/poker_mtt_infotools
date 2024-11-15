@@ -15,7 +15,7 @@ function generateCards() {
     addPlayerCard(playerCount);
 }
 
-// プレイヤーカードを追加する関数
+// プレイヤーカードの生成関数
 function addPlayerCard(playerIndex) {
     const container = document.getElementById("players-container");
     const card = document.createElement("div");
@@ -49,13 +49,16 @@ function addPlayerCard(playerIndex) {
         <select id="seat${playerIndex}">${seatOptions}</select>
         <input type="text" id="nickname${playerIndex}" placeholder="ニックネーム">
         <input type="number" id="stack${playerIndex}" placeholder="スタックサイズ">
-        
-        <p>BB: <span id="bb${playerIndex}">-</span></p> <!-- BB表示をスタックサイズの下に移動 -->
-        
-        <select id="playStyle${playerIndex}">${playStyleOptions}</select>
-        <select id="threeBet${playerIndex}">${threeBetOptions}</select>
-        <select id="limp${playerIndex}">${limpOptions}</select>
-        
+
+        <p>BB: <span id="bb${playerIndex}">-</span></p>
+
+        <button class="toggle-button" onclick="toggleOptions(${playerIndex})">オプションを展開</button>
+        <div id="options${playerIndex}" class="options-collapsible" style="display: none;">
+            <select id="playStyle${playerIndex}">${playStyleOptions}</select>
+            <select id="threeBet${playerIndex}">${threeBetOptions}</select>
+            <select id="limp${playerIndex}">${limpOptions}</select>
+        </div>
+
         <button class="delete-button" onclick="removePlayerCard(${playerIndex})">削除</button>
     `;
     container.appendChild(card);
@@ -63,6 +66,20 @@ function addPlayerCard(playerIndex) {
     // playersData配列に初期データを追加
     playersData[playerIndex - 1] = { playerIndex, nickname: "", stack: 0, bb: 0, seat: 0, playStyle: "", threeBet: "", limp: "" };
 }
+
+// オプションの折りたたみ/展開を切り替える関数
+function toggleOptions(playerIndex) {
+    const optionsDiv = document.getElementById(`options${playerIndex}`);
+    const button = document.querySelector(`#player${playerIndex} .toggle-button`);
+    if (optionsDiv.style.display === "none") {
+        optionsDiv.style.display = "block";
+        button.textContent = "オプションを折りたたむ";
+    } else {
+        optionsDiv.style.display = "none";
+        button.textContent = "オプションを展開";
+    }
+}
+
 
 // プレイヤーカードを削除する関数
 function removePlayerCard(playerIndex) {

@@ -116,3 +116,30 @@ button#generate-button:hover {
     color: orange;
     font-weight: bold;
 }
+
+.toggle-button {
+    background-color: #007bff; /* 青色 */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-button:hover {
+    background-color: #0056b3; /* ホバーカラー */
+}
+
+.toggle-button:active {
+    background-color: #003d80; /* クリック時のカラー */
+}
+
+.options-collapsible {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
