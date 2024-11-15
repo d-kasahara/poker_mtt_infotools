@@ -1,4 +1,3 @@
-// プレイヤーデータを保持する変数
 let playersData = [];
 let playerCount = 0;
 
@@ -15,7 +14,7 @@ function generateCards() {
     addPlayerCard(playerCount);
 }
 
-// プレイヤーカードの生成関数
+// プレイヤーカードを追加する関数
 function addPlayerCard(playerIndex) {
     const container = document.getElementById("players-container");
     const card = document.createElement("div");
@@ -80,7 +79,6 @@ function toggleOptions(playerIndex) {
     }
 }
 
-
 // プレイヤーカードを削除する関数
 function removePlayerCard(playerIndex) {
     document.getElementById(`player${playerIndex}`).remove();
@@ -103,8 +101,8 @@ function calculateBB() {
         alert("正しいブラインド金額を入力してください");
         return;
     }
-    
-    let stackInfoText = "<strong>スタック情報:</strong><br>";
+
+    let stackInfoText = "<strong>シート順:</strong><br>";
     let stackOrderText = "<strong>スタック順:</strong><br>";
     let stacks = [];
 
@@ -124,21 +122,25 @@ function calculateBB() {
                 player.seat = seat;
                 stacks.push(player);
 
-                stackInfoText += `シート${seat} - ${nickname}：${stackInput} (${bb.toFixed(2)} BB) <br>`;
+                // 10BB以下なら赤文字にする
+                const colorClass = bb <= 10 ? "red-text" : "";
+                stackInfoText += `<span class="${colorClass}">シート${seat} - ${nickname}：${stackInput} (${bb.toFixed(2)} BB)</span><br>`;
             } else {
                 bbDisplay.textContent = "-";
             }
         }
     });
 
-    // スタック順（多い順に並び替え、ニックネームの右側を「：」に変更）
+    // スタック順（多い順に並び替え、10BB以下は赤文字）
     stacks.sort((a, b) => b.stack - a.stack);
     stacks.slice(0, 10).forEach(player => {
-        stackOrderText += `シート${player.seat} - ${player.nickname}：${player.stack} (${player.bb.toFixed(2)} BB)<br>`;
+        const colorClass = player.bb <= 10 ? "red-text" : "";
+        stackOrderText += `<span class="${colorClass}">シート${player.seat} - ${player.nickname}：${player.stack} (${player.bb.toFixed(2)} BB)</span><br>`;
     });
 
-    stackInfoDisplay.innerHTML = stackInfoText;
     stackOrderDisplay.innerHTML = stackOrderText;
+    stackInfoDisplay.innerHTML = stackInfoText;
+
     saveData();
 }
 

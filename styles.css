@@ -143,3 +143,8 @@ button#generate-button:hover {
     border-radius: 4px;
     background-color: #f9f9f9;
 }
+
+.red-text {
+    color: red;
+    font-weight: bold;
+}
