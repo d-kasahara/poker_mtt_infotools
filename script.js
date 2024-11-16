@@ -97,6 +97,7 @@ function calculateBB() {
     const blind = parseFloat(document.getElementById("blind").value);
     const stackInfoDisplay = document.getElementById("stack-info-display");
     const stackOrderDisplay = document.getElementById("stack-order-display");
+    const averageStackDisplay = document.getElementById("average-stack-display"); // 平均チップ量とBBを表示するエリア
     if (isNaN(blind) || blind <= 0) {
         alert("正しいブラインド金額を入力してください");
         return;
@@ -104,6 +105,8 @@ function calculateBB() {
 
     let stackInfoText = "<strong>シート順:</strong><br>";
     let stackOrderText = "<strong>スタック順:</strong><br>";
+    let totalStack = 0;
+    let activePlayers = 0;
     let stacks = [];
 
     playersData.forEach(player => {
@@ -119,19 +122,29 @@ function calculateBB() {
                 player.nickname = nickname;
                 player.stack = stackInput;
                 player.bb = bb;
-                player.seat = seat;
+                player.seat = parseInt(seat, 10); // シート番号を整数として保存
                 stacks.push(player);
 
-                // 10BB以下なら赤文字にする
-                const colorClass = bb <= 10 ? "red-text" : "";
-                stackInfoText += `<span class="${colorClass}">シート${seat} - ${nickname}：${stackInput} (${bb.toFixed(2)} BB)</span><br>`;
+                totalStack += stackInput; // チップ量を合計
+                activePlayers++; // 有効なプレイヤー数をカウント
             } else {
                 bbDisplay.textContent = "-";
             }
         }
     });
 
-    // スタック順（多い順に並び替え、10BB以下は赤文字）
+    // 平均チップ量と平均BBを計算
+    const averageStack = activePlayers > 0 ? (totalStack / activePlayers).toFixed(2) : 0;
+    const averageBB = activePlayers > 0 ? (averageStack / blind).toFixed(2) : 0;
+
+    // シート順（シート番号順に並び替え）
+    stacks.sort((a, b) => a.seat - b.seat);
+    stacks.forEach(player => {
+        const colorClass = player.bb <= 10 ? "red-text" : "";
+        stackInfoText += `<span class="${colorClass}">シート${player.seat} - ${player.nickname}：${player.stack} (${player.bb.toFixed(2)} BB)</span><br>`;
+    });
+
+    // スタック順（多い順に並び替え）
     stacks.sort((a, b) => b.stack - a.stack);
     stacks.slice(0, 10).forEach(player => {
         const colorClass = player.bb <= 10 ? "red-text" : "";
@@ -140,9 +153,12 @@ function calculateBB() {
 
     stackOrderDisplay.innerHTML = stackOrderText;
     stackInfoDisplay.innerHTML = stackInfoText;
+    averageStackDisplay.innerHTML = `<strong>卓の平均チップ量:</strong> ${averageStack} (${averageBB} BB)`;
 
     saveData();
 }
+
+
 
 // データをローカルストレージに保存
 function saveData() {
